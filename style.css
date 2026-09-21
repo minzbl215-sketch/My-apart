@@ -156,6 +156,21 @@ html,body{
 }
 #scene-label{ font-style:italic; color:var(--fluoro); opacity:.55; letter-spacing:1px; font-size:clamp(10px, 2.2vh, 13px); }
 
+#btn-settings{
+  pointer-events:auto; background:rgba(0,0,0,.35); border:1px solid rgba(223,227,223,.25);
+  color:var(--fluoro); border-radius:50%; width:28px; height:28px; font-size:14px;
+  line-height:1; cursor:pointer;
+}
+#settings-panel{
+  position:absolute; top:max(46px, calc(env(safe-area-inset-top) + 32px)); right:14px;
+  background:rgba(6,7,8,.95); border:1px solid rgba(223,227,223,.2); border-radius:6px;
+  padding:12px 14px; display:flex; flex-direction:column; gap:8px; z-index:40;
+  min-width:160px;
+}
+#settings-panel.hidden{ display:none; }
+#settings-panel label{ font-size:clamp(10px,2.2vh,12px); color:var(--fluoro); opacity:.8; letter-spacing:1px; }
+#settings-panel input[type="range"]{ width:100%; accent-color:var(--fluoro); }
+
 #interact-prompt{
   position:absolute; left:50%; bottom:12vh; transform:translateX(-50%);
   color:var(--rust); opacity:.95; letter-spacing:1px;

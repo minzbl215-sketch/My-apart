@@ -69,6 +69,14 @@
 
       <div id="hud">
         <span id="scene-label"></span>
+        <button id="btn-settings" aria-label="pengaturan">☀</button>
+      </div>
+
+      <!-- Settings panel (brightness) -->
+      <div id="settings-panel" class="hidden">
+        <label for="brightness-slider">kecerahan</label>
+        <input type="range" id="brightness-slider" min="60" max="150" value="100" />
+        <button id="settings-close" class="btn-ghost btn-small">tutup</button>
       </div>
 
       <!-- Dialogue box -->

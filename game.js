@@ -36,7 +36,7 @@
   let W = 0, H = 0, CW = 0, CH = 0;
   let flags = {};
   let currentScene = null;
-  let player = { x: 0.5, y: 0.6, targetX: 0.5, targetY: 0.6, speed: 0.55, facing: 1 };
+  let player = { x: 0.5, y: 0.6, speed: 0.34, facing: 1, vx: 0, vy: 0 };
   let nearestHotspot = null;
   let state = "explore"; // explore | dialogue | jumpscare | cutscene | puzzle
   let dialogueQueue = [];
@@ -400,13 +400,19 @@
 
     if (state === "explore") {
       mag = Math.sqrt(joyVector.x * joyVector.x + joyVector.y * joyVector.y);
-      if (mag > 0.08) {
-        player.x += joyVector.x * player.speed * dt;
-        player.y += joyVector.y * player.speed * dt;
-        player.x = Math.min(0.94, Math.max(0.06, player.x));
-        player.y = Math.min(0.9, Math.max(0.4, player.y));
-        if (Math.abs(joyVector.x) > 0.15) player.facing = joyVector.x > 0 ? 1 : -1;
-      }
+      // ease velocity toward the joystick's target instead of snapping —
+      // gives a natural accelerate/decelerate feel instead of instant speed
+      const targetVx = mag > 0.08 ? joyVector.x * player.speed : 0;
+      const targetVy = mag > 0.08 ? joyVector.y * player.speed : 0;
+      const smoothing = Math.min(1, dt * 9);
+      player.vx += (targetVx - player.vx) * smoothing;
+      player.vy += (targetVy - player.vy) * smoothing;
+
+      player.x += player.vx * dt;
+      player.y += player.vy * dt;
+      player.x = Math.min(0.94, Math.max(0.06, player.x));
+      player.y = Math.min(0.9, Math.max(0.4, player.y));
+      if (Math.abs(player.vx) > 0.02) player.facing = player.vx > 0 ? 1 : -1;
 
       const hs = findNearbyHotspot();
       if (hs !== nearestHotspot) {
@@ -435,13 +441,19 @@
     ctx.fillStyle = grad;
     ctx.beginPath(); ctx.arc(pxp, pyp, 40, 0, Math.PI * 2); ctx.fill();
 
-    drawPlayerSprite(ctx, pxp, pyp, now, player.facing, mag > 0.08);
+    const movingSpeed = Math.sqrt(player.vx * player.vx + player.vy * player.vy);
+    drawPlayerSprite(ctx, pxp, pyp, now, player.facing, movingSpeed);
   }
 
   // ---------------- Character sprite (simple 2D vector figure) ----------------
-  function drawPlayerSprite(ctx, px, py, t, facing, walking) {
-    const bob = walking ? Math.sin(t / 130) * 2 : Math.sin(t / 700) * 0.6;
-    const step = walking ? Math.sin(t / 130) * 4 : 0;
+  function drawPlayerSprite(ctx, px, py, t, facing, speed) {
+    // walk-cycle tempo scales with actual movement speed, so faster/slower
+    // steps never look mismatched from how far the character is travelling
+    const walking = speed > 0.02;
+    const cadence = 90 + 260 * Math.max(0, 1 - speed / player.speed); // slower legs when nearly stopped
+    const bob = walking ? Math.sin(t / cadence) * 1.6 : Math.sin(t / 900) * 0.5;
+    const step = walking ? Math.sin(t / cadence) * 3.2 : 0;
+    const armSwing = walking ? Math.sin(t / cadence + Math.PI) * 2 : 0;
     ctx.save();
     ctx.translate(px, py + bob);
     ctx.scale(facing, 1);
@@ -469,14 +481,14 @@
     // hoodie side shading
     ctx.fillStyle = "#324039";
     ctx.fillRect(-9, -15, 5, 19);
-    // arms
+    // arms (subtle opposite swing to the legs, feels less robotic)
     ctx.fillStyle = "#3a4a44";
-    ctx.fillRect(-12, -12, 4, 14);
-    ctx.fillRect(8, -12, 4, 14);
+    ctx.fillRect(-12, -12 + armSwing, 4, 14);
+    ctx.fillRect(8, -12 - armSwing, 4, 14);
     // hands
     ctx.fillStyle = "#caa07a";
-    ctx.fillRect(-12, 0, 4, 4);
-    ctx.fillRect(8, 0, 4, 4);
+    ctx.fillRect(-12, 2 + armSwing, 4, 4);
+    ctx.fillRect(8, 2 - armSwing, 4, 4);
 
     // neck + head
     ctx.fillStyle = "#caa07a";
@@ -577,6 +589,34 @@
       if (nextIdx !== statusIdx) { statusIdx = nextIdx; loadingStatus.textContent = statuses[statusIdx]; }
     }, 220);
   }
+
+  // ---------------- Settings: brightness ----------------
+  (function setupSettings() {
+    const btn = document.getElementById("btn-settings");
+    const panel = document.getElementById("settings-panel");
+    const slider = document.getElementById("brightness-slider");
+    const closeBtn = document.getElementById("settings-close");
+    const root = document.getElementById("game-root");
+
+    let saved = "100";
+    try { saved = localStorage.getItem("lantaiatas-brightness") || "100"; } catch (e) {}
+    slider.value = saved;
+    root.style.filter = `brightness(${saved}%)`;
+
+    btn.addEventListener("pointerdown", (e) => {
+      e.stopPropagation();
+      panel.classList.toggle("hidden");
+    });
+    closeBtn.addEventListener("pointerdown", (e) => {
+      e.stopPropagation();
+      panel.classList.add("hidden");
+    });
+    slider.addEventListener("input", () => {
+      root.style.filter = `brightness(${slider.value}%)`;
+      try { localStorage.setItem("lantaiatas-brightness", slider.value); } catch (e) {}
+    });
+    slider.addEventListener("pointerdown", (e) => e.stopPropagation());
+  })();
 
   resize();
   requestAnimationFrame((t) => { lastFrameTime = t; render(t); });

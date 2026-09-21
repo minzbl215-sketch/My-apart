@@ -66,9 +66,13 @@ const STORY = {
         ctx.fillStyle = "#5c1f1f";
         ctx.fillRect(w * 0.88, h * 0.32, w * 0.06, h * 0.14);
         ctx.strokeStyle = "#000"; ctx.strokeRect(w * 0.88, h * 0.32, w * 0.06, h * 0.14);
-        // lampu neon di plafon (berkedip lewat animasi terpisah di game.js)
+        // lampu neon di plafon — dikasih glow halus biar keliatan lebih menyala
+        ctx.save();
+        ctx.shadowColor = "rgba(184,216,201,0.8)";
+        ctx.shadowBlur = 14;
         ctx.fillStyle = "#b8d8c9";
         ctx.fillRect(w * 0.38, h * 0.12, w * 0.24, h * 0.015);
+        ctx.restore();
         // pintu unit 14B
         ctx.fillStyle = "#2b2420";
         ctx.fillRect(w * 0.4, h * 0.22, w * 0.2, h * 0.38);
@@ -316,11 +320,15 @@ const STORY = {
         ctx.fillRect(w * 0.08, h * 0.44, w * 0.26, h * 0.14);
         ctx.fillStyle = "#26221c";
         ctx.fillRect(w * 0.08, h * 0.4, w * 0.26, h * 0.05); // bantal/selimut
-        // nakas kecil + lampu tidur
+        // nakas kecil + lampu tidur (glow halus)
         ctx.fillStyle = "#221e19";
         ctx.fillRect(w * 0.36, h * 0.5, w * 0.06, h * 0.08);
+        ctx.save();
+        ctx.shadowColor = "rgba(184,216,201,0.9)";
+        ctx.shadowBlur = 10;
         ctx.fillStyle = "#b8d8c9";
         ctx.beginPath(); ctx.arc(w * 0.39, h * 0.48, w * 0.008, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
         // meja rias dengan cermin kecil
         ctx.fillStyle = "#221e19";
         ctx.fillRect(w * 0.46, h * 0.52, w * 0.14, h * 0.08);
