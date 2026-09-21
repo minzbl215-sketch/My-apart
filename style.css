@@ -167,6 +167,55 @@ html,body{
 }
 #interact-prompt.hidden{ display:none; }
 
+/* ---------- Joystick ---------- */
+#joystick-zone{
+  position:absolute; left:3vh; bottom:3vh;
+  width:20vh; height:20vh; max-width:120px; max-height:120px; min-width:80px; min-height:80px;
+  touch-action:none; z-index:30;
+}
+#joystick-base{
+  position:absolute; inset:0; border-radius:50%;
+  background:rgba(223,227,223,0.05);
+  border:1px solid rgba(223,227,223,.22);
+}
+#joystick-knob{
+  position:absolute; width:42%; height:42%; left:29%; top:29%;
+  border-radius:50%;
+  background:rgba(184,216,201,0.32);
+  border:1px solid rgba(184,216,201,.65);
+}
+
+/* ---------- Puzzle screen ---------- */
+#puzzle-screen{ background:rgba(3,4,4,.96); }
+.puzzle-prompt{
+  font-style:italic; color:var(--fluoro); opacity:.85; letter-spacing:1px;
+  font-size:clamp(12px, 2.8vh, 16px); margin-bottom:1.4em;
+}
+.puzzle-dials{ display:flex; gap:4vh; margin-bottom:2em; }
+.puzzle-dial{ display:flex; flex-direction:column; align-items:center; gap:.5em; }
+.dial-btn{
+  background:transparent; border:1px solid rgba(223,227,223,.35); color:var(--fog);
+  width:34px; height:28px; border-radius:3px; font-size:13px; cursor:pointer;
+}
+.dial-btn:active{ background:rgba(223,227,223,.1); }
+.dial-value{
+  font-family:'Bebas Neue', sans-serif; font-size:clamp(24px, 6vh, 36px);
+  color:var(--fog); width:44px; text-align:center;
+}
+.puzzle-actions{ display:flex; gap:1.4em; }
+.btn-small{ font-size:clamp(11px, 2.4vh, 14px); padding:.6em 1.4em; }
+
+/* ---------- End / Credits screen ---------- */
+.end-actions{ display:flex; gap:1.2em; }
+.credits-list{ margin:1.2em 0 2em 0; text-align:left; }
+.credits-list p{
+  font-size:clamp(11px, 2.6vh, 15px); color:var(--fog); opacity:.85; margin:.5em 0;
+  display:flex; gap:.8em;
+}
+.credits-role{
+  color:var(--fluoro); font-style:italic; min-width:11em; opacity:.8;
+}
+
 /* ---------- Dialogue box ---------- */
 #dialogue-box{
   position:absolute; left:0; right:0; bottom:0;

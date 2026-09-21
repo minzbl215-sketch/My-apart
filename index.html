@@ -60,6 +60,13 @@
 
       <div id="interact-prompt" class="hidden">ketuk untuk berinteraksi</div>
 
+      <!-- Virtual joystick (bottom-left, circular) -->
+      <div id="joystick-zone">
+        <div id="joystick-base">
+          <div id="joystick-knob"></div>
+        </div>
+      </div>
+
       <div id="hud">
         <span id="scene-label"></span>
       </div>
@@ -75,12 +82,55 @@
       <canvas id="jumpscare-canvas" class="hidden"></canvas>
     </div>
 
+    <!-- PUZZLE SCREEN (3-digit combination lock) -->
+    <div id="puzzle-screen" class="screen hidden">
+      <div class="grain"></div>
+      <p id="puzzle-prompt" class="puzzle-prompt">masukkan kode 3 digit</p>
+      <div class="puzzle-dials">
+        <div class="puzzle-dial" data-index="0">
+          <button class="dial-btn dial-up">▲</button>
+          <div class="dial-value">0</div>
+          <button class="dial-btn dial-down">▼</button>
+        </div>
+        <div class="puzzle-dial" data-index="1">
+          <button class="dial-btn dial-up">▲</button>
+          <div class="dial-value">0</div>
+          <button class="dial-btn dial-down">▼</button>
+        </div>
+        <div class="puzzle-dial" data-index="2">
+          <button class="dial-btn dial-up">▲</button>
+          <div class="dial-value">0</div>
+          <button class="dial-btn dial-down">▼</button>
+        </div>
+      </div>
+      <div class="puzzle-actions">
+        <button id="puzzle-cancel" class="btn-ghost btn-small">batal</button>
+        <button id="puzzle-confirm" class="btn-ghost btn-small">buka</button>
+      </div>
+    </div>
+
     <!-- END SCREEN -->
     <div id="end-screen" class="screen hidden">
       <div class="grain"></div>
       <h2 class="end-title">bersambung...</h2>
       <p class="end-sub">bab dua akan datang</p>
-      <button id="btn-restart" class="btn-ghost">mulai ulang</button>
+      <div class="end-actions">
+        <button id="btn-credits" class="btn-ghost">credits</button>
+        <button id="btn-restart" class="btn-ghost">mulai ulang</button>
+      </div>
+    </div>
+
+    <!-- CREDITS SCREEN -->
+    <div id="credits-screen" class="screen hidden">
+      <div class="grain"></div>
+      <h2 class="end-title" style="font-size:clamp(20px,6vh,32px)">credits</h2>
+      <div class="credits-list">
+        <p><span class="credits-role">cerita &amp; desain</span>minzbl215</p>
+        <p><span class="credits-role">karakter &amp; visual</span>minzbl215</p>
+        <p><span class="credits-role">voice / dubbing</span>segera menyusul</p>
+        <p><span class="credits-role">dibangun bareng</span>Claude (Anthropic)</p>
+      </div>
+      <button id="btn-credits-back" class="btn-ghost">kembali</button>
     </div>
 
   </div>
