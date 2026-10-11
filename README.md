@@ -6,6 +6,8 @@ Game horror 2D berbasis web (HTML/CSS/JS murni) — bab 1 "Kunci Lama". Setting:
 
 **Soal voice/dubbing:** belum ada di build ini. Nanti pas rekaman suara udah siap, tinggal dikasihkan filenya buat diintegrasiin.
 
+**Soal suara/sound:** semua efek suara (langkah kaki, suara ambient/drone suasana mencekam, chime pas interaksi, klik puzzle, chime sukses/gagal buka kode) di-generate langsung lewat kode (Web Audio API) — bukan file audio, jadi 0 KB tambahan ke ukuran game. Fungsinya ada di `game.js` bagian "Audio".
+
 ## Cara main lokal
 Buka `index.html` langsung di browser HP/laptop — file statis, gak butuh server.
 
